@@ -1,4 +1,8 @@
-﻿using Application.Features.Codings.Rules;
+﻿using Application.Features.Auth.Rules;
+using Application.Features.Githubs.Rules;
+using Application.Features.Languages.Rules;
+using Application.Features.Technologies.Rules;
+using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Validation;
 using FluentValidation;
 using MediatR;
@@ -20,13 +24,16 @@ namespace Application
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
-            services.AddScoped<CodingBusinessRules>();
+            services.AddScoped<LanguageBusinessRules>();
+            services.AddScoped<TechnologyBusinessRules>();
+            services.AddScoped<AuthBusinessRules>();
+            services.AddScoped<GithubBusinessRules>();
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
             //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
             //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CacheRemovingBehavior<,>));
             //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
             return services;
